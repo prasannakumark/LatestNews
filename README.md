@@ -1,9 +1,7 @@
 # LatestNews
 
-LatestNews application is just a demo application to learn all android architeture components using kotlin.
+LatestNews application is just a demo application to learn all android architecture components using kotlin.
 Below are the tools currently we have used.
-
-This application has been developing using below the tools
 
 <b> Kotlin</b></br>
 <b> MVVM architecture</br>
