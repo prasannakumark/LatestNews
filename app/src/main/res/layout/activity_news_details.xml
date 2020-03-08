@@ -23,12 +23,21 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp">
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    app:mutableText="@{viewModel.getTitle()}" />
 
                 <FrameLayout
                     android:id="@+id/frame_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/textView"
                     android:padding="5dp">
 
                     <ImageView
@@ -36,13 +45,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         app:urlToImage="@{viewModel.getImageUrl()}" />
-
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
-                        app:mutableText="@{viewModel.getTitle()}" />
 
                     <TextView
                         android:id="@+id/text_view_date"
