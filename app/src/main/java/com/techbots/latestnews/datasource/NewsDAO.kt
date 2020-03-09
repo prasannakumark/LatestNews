@@ -6,6 +6,10 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.techbots.latestnews.datasource.NewsArticle
 
+/**
+ * All kind of database queries will be done here.
+ * like Insert, delete and get data.
+ */
 @Dao
 interface NewsDAO {
     @get:Query("SELECT * FROM NewsArticle")

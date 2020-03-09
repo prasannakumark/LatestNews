@@ -33,6 +33,10 @@ class MainActivity : AppCompatActivity() , HomePageViewModel.CallBacks{
         viewModel.makeServerRequest()
     }
 
+    /**
+     * This method is to display dialog for no network available
+     * If no net work available we will be display offline data
+     */
     override fun networkError() {
         // build alert dialog
         val dialogBuilder = AlertDialog.Builder(this)

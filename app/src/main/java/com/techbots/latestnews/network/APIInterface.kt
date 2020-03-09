@@ -5,7 +5,9 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import io.reactivex.Observable
 
-
+/**
+ * This is an interface where we can define all server related queries with method type like @GET or @POST
+ */
 interface APIInterface {
 
     @GET("top-headlines")

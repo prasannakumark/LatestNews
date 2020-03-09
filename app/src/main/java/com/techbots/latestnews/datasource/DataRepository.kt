@@ -9,12 +9,16 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
+/**
+ * This is class will all DataSource related work like communicating with
+ * server for fetch data and it will notify to the listeners
+ */
 class DataRepository(var apiInterface: APIInterface) {
     var pageCount:Int = 1
 
     interface UICallBacks {
         /**
-         * Using this method we can start retriving stat from server
+         * Using this method we can notify to user the server repsonses
          */
         fun onRetrieveData()
         fun onRetrieveDataFinish()
@@ -22,6 +26,11 @@ class DataRepository(var apiInterface: APIInterface) {
         fun onRetrieveDataError()
     }
 
+    /**
+     * Using this method we can fetch data from server.
+     * Here using rxJava it will do appropriate work base on its requires thread.
+     * Then it will be notify to listeners
+     */
     fun makeServerRequest(uiCallBacks: UICallBacks) {
         Log.v(DataRepository::class.simpleName, "makeServerRequest")
         apiInterface.getTopHeadLines("us","business", API_KEY, pageCount)

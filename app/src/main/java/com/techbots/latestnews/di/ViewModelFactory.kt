@@ -8,7 +8,9 @@ import com.techbots.latestnews.datasource.AppDatabase
 import com.techbots.latestnews.viewmodel.ArticleViewModel
 import com.techbots.latestnews.viewmodel.HomePageViewModel
 
-
+/**
+ * This is class for get exact view model based on the type of activity
+ */
 class ViewModelFactory(private val activity: AppCompatActivity): ViewModelProvider.Factory{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomePageViewModel::class.java)) {

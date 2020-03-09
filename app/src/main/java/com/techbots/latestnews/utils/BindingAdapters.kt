@@ -1,5 +1,8 @@
 package com.techbots.latestnews.utils
 
+/**
+ * This file we can define all custom databinding related work
+ */
 
 import android.util.Log
 import android.view.View

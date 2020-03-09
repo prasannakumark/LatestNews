@@ -10,6 +10,9 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
+/**
+ * This object to for to get the retrofit object by providing their dependencies
+ */
 @Module
 @Suppress("unused")
 object NetworkModule {

@@ -18,7 +18,9 @@ import com.techbots.latestnews.view.NewArticleAdapter
 import org.jetbrains.annotations.NotNull
 import javax.inject.Inject
 
-
+/**
+ * This is class mediator between view and data source.
+ */
 class HomePageViewModel(private val context: Context, private val newsDAO: NewsDAO) : BaseViewModel(),
     DataRepository.UICallBacks {
     val loadingVisibility:MutableLiveData<Int> = MutableLiveData()
@@ -50,12 +52,19 @@ class HomePageViewModel(private val context: Context, private val newsDAO: NewsD
         fun networkError()
     }
 
+    /**
+     * Load more data when do scroll up(it like pagination)
+     */
     fun loadMoreData() {
         if(isOnline(context)) {
             dataRepository.makeServerRequest(this)
         }
     }
 
+    /**
+     * This is method will be called first time of application lunch.
+     * Based on the isOnline method it will perform required action.
+     */
     fun makeServerRequest() {
         if(isOnline(context)) {
             dataRepository.makeServerRequest(this)
@@ -64,6 +73,9 @@ class HomePageViewModel(private val context: Context, private val newsDAO: NewsD
         }
     }
 
+    /**
+     * When user is in offline, we will latest offline data
+     */
     fun loadOfflineArticles() {
         LoadAsyncTask(ArrayList<NewsArticle>(),false).execute()
     }
@@ -92,6 +104,7 @@ class HomePageViewModel(private val context: Context, private val newsDAO: NewsD
         }
     }
 
+    //TODO: we have to implement fetch local data using RXJava in background thread
     @SuppressLint("StaticFieldLeak")
     inner class LoadAsyncTask(var newsArticle: List<NewsArticle>, val isInsert:Boolean): AsyncTask<String, String, String>() {
         override fun doInBackground(vararg p0: String?): String {
