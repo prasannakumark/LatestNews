@@ -1,10 +1,6 @@
 package com.techbots.latestnews.datasource
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
-import com.techbots.latestnews.datasource.NewsArticle
+import androidx.room.*
 
 /**
  * All kind of database queries will be done here.
@@ -19,6 +15,6 @@ interface NewsDAO {
     fun deleteAll()
 
     @Transaction
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(articles: List<NewsArticle>)
 }

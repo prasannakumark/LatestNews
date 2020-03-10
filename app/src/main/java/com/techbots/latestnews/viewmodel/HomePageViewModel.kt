@@ -1,10 +1,8 @@
 package com.techbots.latestnews.viewmodel
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.nfc.tech.MifareUltralight
-import android.nfc.tech.MifareUltralight.PAGE_SIZE
-import android.os.AsyncTask
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +13,9 @@ import com.techbots.latestnews.datasource.NewsDAO
 import com.techbots.latestnews.db.DataRepository
 import com.techbots.latestnews.utils.isOnline
 import com.techbots.latestnews.view.NewArticleAdapter
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
+import io.reactivex.schedulers.Schedulers
 import org.jetbrains.annotations.NotNull
 import javax.inject.Inject
 
@@ -77,7 +78,19 @@ class HomePageViewModel(private val context: Context, private val newsDAO: NewsD
      * When user is in offline, we will latest offline data
      */
     fun loadOfflineArticles() {
-        LoadAsyncTask(ArrayList<NewsArticle>(),false).execute()
+        onRetrieveDataFinish()
+
+        val task = Observable.create<List<NewsArticle>>{ subscribe->
+                try {
+                    subscribe.onNext(newsDAO.all)
+                    subscribe.onComplete()
+                }catch (e:Exception) {
+                    subscribe.onError(e)
+                }
+
+        }.subscribeOn(Schedulers.newThread()).observeOn(mainThread()).subscribe {
+            onNext -> newArticleListAdapter.updateArticleList(onNext)
+        }
     }
 
     override fun onRetrieveData() {
@@ -90,8 +103,34 @@ class HomePageViewModel(private val context: Context, private val newsDAO: NewsD
     }
 
     override fun onRetrieveDateSuccess(newsArticle: List<NewsArticle>) {
-        LoadAsyncTask(newsArticle,true).execute()
-        newArticleListAdapter.updateArticleList(newsArticle)
+
+        val delete = Observable.create<Unit>{ subscribe->
+            try {
+                subscribe.onNext(newsDAO.deleteAll())
+                subscribe.onComplete()
+            }catch (e:Exception) {
+                subscribe.onError(e)
+            }
+
+        }.subscribeOn(Schedulers.newThread()).observeOn(mainThread()).subscribe {
+                onNext -> Log.v(HomePageViewModel::class.simpleName, "Delete Items " + onNext.toString())
+            val insert = Observable.create<Unit>{ subscribe->
+                try {
+                    subscribe.onNext(newsDAO.insertAll(newsArticle))
+                    subscribe.onComplete()
+                }catch (e:Exception) {
+                    subscribe.onError(e)
+                }
+
+            }.subscribeOn(Schedulers.newThread()).observeOn(mainThread()).subscribe {
+                    onNext -> Log.v(HomePageViewModel::class.simpleName, "Inseting an items " + onNext.toString())
+                    newArticleListAdapter.updateArticleList(newsArticle)
+            }
+        }
+
+
+
+
     }
 
     override fun onRetrieveDataError() {
@@ -101,32 +140,6 @@ class HomePageViewModel(private val context: Context, private val newsDAO: NewsD
     companion object {
         fun setCallBacks(homePageViewModel: HomePageViewModel, callBacks: CallBacks) {
             homePageViewModel.callBacks = callBacks
-        }
-    }
-
-    //TODO: we have to implement fetch local data using RXJava in background thread
-    @SuppressLint("StaticFieldLeak")
-    inner class LoadAsyncTask(var newsArticle: List<NewsArticle>, val isInsert:Boolean): AsyncTask<String, String, String>() {
-        override fun doInBackground(vararg p0: String?): String {
-            if(isInsert) {
-                newsDAO.deleteAll()
-                newsDAO.insertAll(newsArticle)
-            } else {
-                newsArticle = newsDAO.all
-            }
-            return ""
-        }
-
-        override fun onPostExecute(result: String?) {
-            super.onPostExecute(result)
-            if(!isInsert) {
-                onRetrieveDataFinish()
-                newArticleListAdapter.updateArticleList(newsArticle)
-            }
-        }
-
-        override fun onPreExecute() {
-            super.onPreExecute()
         }
     }
 }
