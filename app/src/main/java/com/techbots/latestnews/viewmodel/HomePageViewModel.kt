@@ -80,7 +80,7 @@ class HomePageViewModel(private val context: Context, private val newsDAO: NewsD
     fun loadOfflineArticles() {
         onRetrieveDataFinish()
 
-        val task = Observable.create<List<NewsArticle>>{ subscribe->
+        Observable.create<List<NewsArticle>>{ subscribe->
                 try {
                     subscribe.onNext(newsDAO.all)
                     subscribe.onComplete()
@@ -104,7 +104,7 @@ class HomePageViewModel(private val context: Context, private val newsDAO: NewsD
 
     override fun onRetrieveDateSuccess(newsArticle: List<NewsArticle>) {
 
-        val delete = Observable.create<Unit>{ subscribe->
+        Observable.create<Unit>{ subscribe->
             try {
                 subscribe.onNext(newsDAO.deleteAll())
                 subscribe.onComplete()
@@ -114,7 +114,7 @@ class HomePageViewModel(private val context: Context, private val newsDAO: NewsD
 
         }.subscribeOn(Schedulers.newThread()).observeOn(mainThread()).subscribe {
                 onNext -> Log.v(HomePageViewModel::class.simpleName, "Delete Items " + onNext.toString())
-            val insert = Observable.create<Unit>{ subscribe->
+            Observable.create<Unit>{ subscribe->
                 try {
                     subscribe.onNext(newsDAO.insertAll(newsArticle))
                     subscribe.onComplete()
