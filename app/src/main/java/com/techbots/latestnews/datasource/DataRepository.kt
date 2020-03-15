@@ -1,9 +1,8 @@
 package com.techbots.latestnews.db
 
 import android.util.Log
-import com.techbots.latestnews.datasource.NewsArticle
+import com.techbots.latestnews.datasource.ImageInfo
 import com.techbots.latestnews.network.APIInterface
-import com.techbots.latestnews.utils.API_KEY
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -14,7 +13,6 @@ import io.reactivex.schedulers.Schedulers
  * server for fetch data and it will notify to the listeners
  */
 class DataRepository(var apiInterface: APIInterface) {
-    var pageCount:Int = 1
 
     interface UICallBacks {
         /**
@@ -22,7 +20,7 @@ class DataRepository(var apiInterface: APIInterface) {
          */
         fun onRetrieveData()
         fun onRetrieveDataFinish()
-        fun onRetrieveDateSuccess(newsArticle: List<NewsArticle>)
+        fun onRetrieveDateSuccess(messageInfo: ImageInfo)
         fun onRetrieveDataError()
     }
 
@@ -33,20 +31,18 @@ class DataRepository(var apiInterface: APIInterface) {
      */
     fun makeServerRequest(uiCallBacks: UICallBacks) {
         Log.v(DataRepository::class.simpleName, "makeServerRequest")
-        apiInterface.getTopHeadLines("us","business", API_KEY, pageCount)
+        apiInterface.getDogImage()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { uiCallBacks.onRetrieveData()}
             .doOnTerminate { uiCallBacks.onRetrieveDataFinish() }
-            .subscribe(object : Observer<NewsInfo> {
+            .subscribe(object : Observer<ImageInfo> {
                 override fun onComplete() {
                     Log.v(DataRepository::class.simpleName, "onComplete")
                 }
 
-                override fun onNext(newsInfo: NewsInfo) {
-                    pageCount += 1
-                    Log.v(DataRepository::class.simpleName, "onNext " + newsInfo.articles.size)
-                    uiCallBacks.onRetrieveDateSuccess(newsInfo.articles)
+                override fun onNext(imageInfo: ImageInfo) {
+                    uiCallBacks.onRetrieveDateSuccess(imageInfo)
                 }
 
                 override fun onError(e: Throwable) {

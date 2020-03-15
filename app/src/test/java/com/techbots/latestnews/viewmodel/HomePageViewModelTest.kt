@@ -3,7 +3,6 @@ package com.techbots.latestnews.viewmodel
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import com.techbots.latestnews.datasource.NewsDAO
 import com.techbots.latestnews.db.DataRepository
 import com.techbots.latestnews.network.APIInterface
 import com.techbots.latestnews.utils.isOnline

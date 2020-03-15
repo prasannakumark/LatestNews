@@ -1,7 +1,9 @@
 <resources>
-    <string name="app_name">LatestNews</string>
+    <string name="app_name">RandomDog</string>
     <string name="retry">Retry</string>
     <string name="post_error">An error occurred while loading the posts</string>
     <string name="network_error">Network Error</string>
-    <string name="only_offine_data">You can see only offline data</string>
+    <string name="random_dog_generator">Random Dog Generator!</string>
+    <string name="generate_dogs">Generate Dogs!</string>
+    <string name="my_recently_generated_dogs">My Recently Generated Dogs</string>
 </resources>
