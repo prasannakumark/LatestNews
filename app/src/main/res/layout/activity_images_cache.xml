@@ -6,48 +6,34 @@
     <data>
         <variable
             name="viewModel"
-            type="com.techbots.latestnews.viewmodel.HomepageVM" />
+            type="com.techbots.latestnews.viewmodel.ImagesCacheVM" />
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:typeface="monospace"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:text="@string/random_dog_generator"/>
+            android:layout_above="@+id/btn_clear_dogs"
+            app:adapter="@{viewModel.getNewArticleListAdapter()}"/>
 
         <Button
-            android:id="@+id/generate_dogs"
+            android:id="@+id/btn_clear_dogs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="135dp"
-            android:layout_marginBottom="321dp"
+            android:layout_marginStart="147dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="235dp"
             android:background="@drawable/button_rounded"
             android:padding="10dp"
-            android:text="@string/generate_dogs"
+            android:text="@string/clear_dogs"
             android:textColor="@android:color/white"
             android:textSize="15sp" />
 
-        <Button
-            android:id="@+id/generated_dogs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="77dp"
-            android:layout_marginBottom="245dp"
-            android:background="@drawable/button_rounded"
-            android:padding="10dp"
-            android:text="Clear Dogs!"
-            android:textColor="@android:color/white"
-            android:textSize="15sp" />
+
     </RelativeLayout>
 </layout>

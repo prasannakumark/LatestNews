@@ -17,7 +17,7 @@ class ImagesCacheVM(var context: Context): BaseViewModel() {
         diskLruImageCache = DiskLruImageCache(context,"test",cacheSize,Bitmap.CompressFormat.JPEG,20)
         var file = diskLruImageCache.cacheFolder
         var fileName = file.listFiles()
-        imageUrl.value = diskLruImageCache.getBitmap(fileName[1].name.replaceFirst(".0", ""))
+        //imageUrl.value = diskLruImageCache.getBitmap(fileName[1].name.replaceFirst(".0", ""))
     }
 
 }

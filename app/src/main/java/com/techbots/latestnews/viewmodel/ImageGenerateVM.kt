@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.techbots.latestnews.datasource.ImageInfo
 import com.techbots.latestnews.db.DataRepository
+import com.techbots.latestnews.utils.DiskCacheSingleTon
 import com.techbots.latestnews.utils.DiskLruImageCache
 import com.techbots.latestnews.view.ImageGenerateActivity
 import java.net.URL
@@ -23,7 +24,7 @@ class ImageGenerateVM(var context: Context): BaseViewModel(), DataRepository.UIC
     // Use 1/8th of the available memory for this memory cache.
     val cacheSize = maxMemory
 
-    var diskLruImageCache = DiskLruImageCache(context,"test",cacheSize,Bitmap.CompressFormat.JPEG,20)
+    var diskLruImageCache = DiskCacheSingleTon.getInstance(context)!!.diskLruImageCache
     @Inject
     lateinit var dataRepository: DataRepository
 

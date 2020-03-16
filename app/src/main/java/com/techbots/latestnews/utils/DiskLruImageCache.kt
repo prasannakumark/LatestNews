@@ -41,10 +41,6 @@ class DiskLruImageCache(
         return File(cachePath + File.separator + uniqueName)
     }
 
-    fun getAllFileName() {
-        val file = getDiskCacheDir(context,)
-    }
-
     fun put(key: String, data: Bitmap) {
         var editor: DiskLruCache.Editor? = null
         try {

@@ -20,9 +20,14 @@ class HomepageActivity : AppCompatActivity() {
             R.layout.activity_homepage
         )
         homepageVM = ViewModelProviders.of(this,ViewModelFactory(this)).get(HomepageVM::class.java)
+        dataBiding.viewModel = homepageVM
 
         dataBiding.generateDogs.setOnClickListener(View.OnClickListener {
             homepageVM.onClickGenerateDog()
+        })
+
+        dataBiding.generatedDogs.setOnClickListener({
+            homepageVM.onClickMyRecentGenerateDogs()
         })
     }
 }
