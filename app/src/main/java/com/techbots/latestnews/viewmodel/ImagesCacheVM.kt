@@ -2,22 +2,43 @@ package com.techbots.latestnews.viewmodel
 
 import android.content.Context
 import android.graphics.Bitmap
-import com.techbots.latestnews.utils.DiskLruImageCache
+import android.view.View
+import androidx.lifecycle.MutableLiveData
+import com.techbots.latestnews.utils.DiskCacheSingleTon
+import com.techbots.latestnews.view.ImageCacheAdapter
 
 class ImagesCacheVM(var context: Context): BaseViewModel() {
-    // Get max available VM memory, exceeding this amount will throw an
-    // OutOfMemory exception. Stored in kilobytes as LruCache takes an
-    // int in its constructor.
-    private val maxMemory = (Runtime.getRuntime().maxMemory() / 1024).toInt()
-
-    private val cacheSize = maxMemory
-    private lateinit var diskLruImageCache:DiskLruImageCache
-
+    var noImagesFound = MutableLiveData<Boolean>()
+    var diskLruImageCache = DiskCacheSingleTon.getInstance(context)!!.diskLruImageCache
+    var imageCacheAdapter = ImageCacheAdapter()
+    private var listBitmap = ArrayList<Bitmap>(20)
     init {
-        diskLruImageCache = DiskLruImageCache(context,"test",cacheSize,Bitmap.CompressFormat.JPEG,20)
-        var file = diskLruImageCache.cacheFolder
-        var fileName = file.listFiles()
-        //imageUrl.value = diskLruImageCache.getBitmap(fileName[1].name.replaceFirst(".0", ""))
+        val file = diskLruImageCache.cacheFolder
+        var fileNames = file.listFiles()
+        for (fileName in fileNames)  {
+            if (fileName != null) {
+                diskLruImageCache.getBitmap(fileName.name.replaceFirst(".0", ""))?.let {
+                    listBitmap.add(
+                        it
+                    )
+                }
+            }
+        }
+
+        if(listBitmap.isEmpty()) {
+            noImagesFound.value = true
+        } else {
+            noImagesFound.value = false
+            imageCacheAdapter.updateData(listBitmap)
+        }
     }
 
+    fun onClearCacheClick() {
+        if(!noImagesFound.value!!) {
+            noImagesFound.value = true
+            diskLruImageCache.clearCache()
+            imageCacheAdapter.clearData()
+            DiskCacheSingleTon.getInstance(context)!!.clearCache()
+        }
+    }
 }

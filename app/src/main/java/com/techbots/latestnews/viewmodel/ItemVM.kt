@@ -1,13 +1,12 @@
 package com.techbots.latestnews.viewmodel
 
+import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 
 class ItemVM: BaseViewModel() {
-    private val bitmap = MutableLiveData<String>()
+    val imageUrl = MutableLiveData<Bitmap>()
 
-    fun bind(string: String) {
-        bitmap.value = string
+    fun bind(bitmap: Bitmap) {
+        imageUrl.value = bitmap
     }
-
-
 }

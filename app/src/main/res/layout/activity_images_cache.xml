@@ -16,8 +16,23 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/cache_recycler_view"
+            android:layout_marginTop="10dp"
             android:layout_above="@+id/btn_clear_dogs"
-            app:adapter="@{viewModel.getNewArticleListAdapter()}"/>
+            app:adapter="@{viewModel.imageCacheAdapter}"/>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_above="@+id/btn_clear_dogs"
+            app:visibility="@{viewModel.noImagesFound}"
+            android:text="@string/no_attachment_found" />
 
         <Button
             android:id="@+id/btn_clear_dogs"
@@ -25,7 +40,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="147dp"
+            android:layout_marginStart="150dp"
+            android:layout_marginEnd="150dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="235dp"
             android:background="@drawable/button_rounded"

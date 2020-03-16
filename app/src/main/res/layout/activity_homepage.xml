@@ -20,16 +20,18 @@
             android:typeface="monospace"
             android:textSize="20sp"
             android:gravity="center"
+            android:textColor="@android:color/black"
             android:text="@string/random_dog_generator"/>
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="80dp"
+            android:gravity="center"
+            android:orientation="vertical">
         <Button
             android:id="@+id/generate_dogs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="135dp"
-            android:layout_marginBottom="321dp"
             android:background="@drawable/button_rounded"
             android:padding="10dp"
             android:text="@string/generate_dogs"
@@ -40,14 +42,12 @@
             android:id="@+id/generated_dogs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="77dp"
-            android:layout_marginBottom="245dp"
             android:background="@drawable/button_rounded"
             android:padding="10dp"
+            android:layout_marginTop="10dp"
             android:text="@string/my_recently_generated_dogs"
             android:textColor="@android:color/white"
             android:textSize="15sp" />
+        </LinearLayout>
     </RelativeLayout>
 </layout>

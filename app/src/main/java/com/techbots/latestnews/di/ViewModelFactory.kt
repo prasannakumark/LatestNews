@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.techbots.latestnews.viewmodel.HomepageVM
 import com.techbots.latestnews.viewmodel.ImageGenerateVM
+import com.techbots.latestnews.viewmodel.ImagesCacheVM
+import com.techbots.latestnews.viewmodel.ItemVM
 
 /**
  * This is class for get exact view model based on the type of activity
@@ -18,6 +20,12 @@ class ViewModelFactory(private val activity: AppCompatActivity): ViewModelProvid
         } else if (modelClass.isAssignableFrom(ImageGenerateVM::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return ImageGenerateVM(activity) as T
+        } else if (modelClass.isAssignableFrom(ImagesCacheVM::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return ImagesCacheVM(activity) as T
+        } else if (modelClass.isAssignableFrom(ItemVM::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return ItemVM() as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
 

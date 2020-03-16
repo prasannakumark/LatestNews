@@ -16,7 +16,7 @@ class DiskCacheSingleTon private constructor(context: Context) {
         private var mDiskCacheSingleTon: DiskCacheSingleTon? = null
         fun getInstance(context: Context): DiskCacheSingleTon? {
             if (mDiskCacheSingleTon == null) {
-                synchronized(mDiskCacheSingleTon!!) {
+                synchronized(DiskLruImageCache::class) {
                     if (mDiskCacheSingleTon == null) {
                         mDiskCacheSingleTon =
                             DiskCacheSingleTon(context)
@@ -25,6 +25,10 @@ class DiskCacheSingleTon private constructor(context: Context) {
             }
             return mDiskCacheSingleTon
         }
+    }
+
+    fun clearCache() {
+        mDiskCacheSingleTon = null
     }
 
     init {

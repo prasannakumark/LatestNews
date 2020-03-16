@@ -16,10 +16,8 @@ class DataRepository(var apiInterface: APIInterface) {
 
     interface UICallBacks {
         /**
-         * Using this method we can notify to user the server repsonses
+         * Using this method we can notify to user the server response
          */
-        fun onRetrieveData()
-        fun onRetrieveDataFinish()
         fun onRetrieveDateSuccess(messageInfo: ImageInfo)
         fun onRetrieveDataError()
     }
@@ -34,8 +32,6 @@ class DataRepository(var apiInterface: APIInterface) {
         apiInterface.getDogImage()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { uiCallBacks.onRetrieveData()}
-            .doOnTerminate { uiCallBacks.onRetrieveDataFinish() }
             .subscribe(object : Observer<ImageInfo> {
                 override fun onComplete() {
                     Log.v(DataRepository::class.simpleName, "onComplete")
