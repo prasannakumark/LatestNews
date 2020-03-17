@@ -3,7 +3,6 @@ package com.techbots.latestnews.di
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.room.Room
 import com.techbots.latestnews.viewmodel.HomepageVM
 import com.techbots.latestnews.viewmodel.ImageGenerateVM
 import com.techbots.latestnews.viewmodel.ImagesCacheVM

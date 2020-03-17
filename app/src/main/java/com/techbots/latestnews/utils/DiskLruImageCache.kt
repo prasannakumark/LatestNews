@@ -104,20 +104,6 @@ class DiskLruImageCache(
         return bitmap
     }
 
-    fun containsKey(key: String?): Boolean {
-        var contained = false
-        var snapshot: DiskLruCache.Snapshot? = null
-        try {
-            snapshot = mDiskCache!![key]
-            contained = snapshot != null
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } finally {
-            snapshot?.close()
-        }
-        return contained
-    }
-
     fun clearCache() {
         if (BuildConfig.DEBUG) {
             Log.d("cache_test_DISK_", "disk cache CLEARED")
