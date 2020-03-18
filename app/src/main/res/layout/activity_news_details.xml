@@ -29,7 +29,7 @@
                     android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@android:color/black"
                     android:textStyle="bold"
                     app:mutableText="@{viewModel.getTitle()}" />
 

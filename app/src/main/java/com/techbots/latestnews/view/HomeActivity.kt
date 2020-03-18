@@ -1,22 +1,18 @@
 package com.techbots.latestnews.view
 
-import android.app.SearchManager
-import android.content.Context
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.tabs.TabLayout
-import androidx.viewpager.widget.ViewPager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 import com.techbots.latestnews.R
 import com.techbots.latestnews.view.ui.main.SectionsPagerAdapter
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
@@ -24,16 +20,16 @@ class HomeActivity : AppCompatActivity() {
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
+        val searchView:SearchView = findViewById(R.id.search_view)
+        searchView.setOnQueryTextListener(this)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.dashboard, menu)
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        Toast.makeText(this,"Its still in development", Toast.LENGTH_LONG).show()
+        return true
+    }
 
-        val searchItem: MenuItem? = menu?.findItem(R.id.action_search)
-        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-       /* val searchView: SearchView? = searchItem?.actionView as SearchView
-
-        searchView?.setSearchableInfo(searchManager.getSearchableInfo(componentName))*/
+    override fun onQueryTextChange(newText: String?): Boolean {
         return true
     }
 }

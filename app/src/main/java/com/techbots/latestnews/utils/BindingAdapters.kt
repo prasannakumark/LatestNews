@@ -44,7 +44,7 @@ fun setUrlToImage(view: ImageView, text: MutableLiveData<String>?) {
     if(parentActivity != null && text != null) {
         Log.v("setUrlToImage ", "Image url " + text.value)
         text.observe(parentActivity, Observer { Glide.with(view.context).load(text.value).centerCrop()
-            .placeholder(R.drawable.icon_no_image_found).into(view)})
+            .placeholder(android.R.color.darker_gray).into(view)})
     }
 }
 
