@@ -4,4 +4,10 @@
     <string name="post_error">An error occurred while loading the posts</string>
     <string name="network_error">Network Error</string>
     <string name="only_offine_data">You can see only offline data</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="tab_text_1">Top Headlines</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string-array name="features">
+
+    </string-array>
 </resources>

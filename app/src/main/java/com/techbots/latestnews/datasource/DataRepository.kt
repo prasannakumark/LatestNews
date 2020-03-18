@@ -33,7 +33,36 @@ class DataRepository(var apiInterface: APIInterface) {
      */
     fun makeServerRequest(uiCallBacks: UICallBacks) {
         Log.v(DataRepository::class.simpleName, "makeServerRequest")
-        apiInterface.getTopHeadLines("us","business", API_KEY, pageCount)
+        apiInterface.getTopHeadLines("in", API_KEY, pageCount)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { uiCallBacks.onRetrieveData()}
+            .doOnTerminate { uiCallBacks.onRetrieveDataFinish() }
+            .subscribe(object : Observer<NewsInfo> {
+                override fun onComplete() {
+                    Log.v(DataRepository::class.simpleName, "onComplete")
+                }
+
+                override fun onNext(newsInfo: NewsInfo) {
+                    pageCount += 1
+                    Log.v(DataRepository::class.simpleName, "onNext " + newsInfo.articles.size)
+                    uiCallBacks.onRetrieveDateSuccess(newsInfo.articles)
+                }
+
+                override fun onError(e: Throwable) {
+                    Log.v(DataRepository::class.simpleName, "onError " + e.message)
+                    uiCallBacks.onRetrieveDataError()
+                }
+
+                override fun onSubscribe(d: Disposable) {
+                    Log.v(DataRepository::class.simpleName, "onSubscribe " + d.toString())
+                }
+            })
+    }
+
+    fun makeServerRequestByCatagory(uiCallBacks: UICallBacks, string: String) {
+        Log.v(DataRepository::class.simpleName, "makeServerRequest")
+        apiInterface.getTopHeadLinesByCatogery(string, API_KEY, pageCount)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { uiCallBacks.onRetrieveData()}

@@ -12,6 +12,16 @@ interface APIInterface {
 
     @GET("top-headlines")
     fun getTopHeadLines(
-        @Query("country") country: String, @Query("category") category: String,
+        @Query("country") country: String,
+        @Query("apiKey") apiKey: String,@Query("page") page: Int): Observable<NewsInfo>
+
+    @GET("top-headlines")
+    fun getTopHeadLinesByCatogery(
+        @Query("category") category: String,
+        @Query("apiKey") apiKey: String,@Query("page") page: Int): Observable<NewsInfo>
+
+    @GET("everything")
+    fun getEverything(
+        @Query("q") country: String,
         @Query("apiKey") apiKey: String,@Query("page") page: Int): Observable<NewsInfo>
 }

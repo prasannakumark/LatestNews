@@ -66,9 +66,13 @@ class HomePageViewModel(private val context: Context, private val newsDAO: NewsD
      * This is method will be called first time of application lunch.
      * Based on the isOnline method it will perform required action.
      */
-    fun makeServerRequest() {
+    fun makeServerRequest(category: String) {
         if(isOnline(context)) {
-            dataRepository.makeServerRequest(this)
+            if(category == "For You") {
+                dataRepository.makeServerRequest(this)
+            } else {
+                dataRepository.makeServerRequestByCatagory(this,category)
+            }
         } else {
             callBacks.networkError()
         }
