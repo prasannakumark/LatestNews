@@ -40,8 +40,6 @@ class NewsDetailsActivity : AppCompatActivity() {
         binding.viewModel = articleViewModel
 
         binding.newsArticlesList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.newsArticlesList.setHasFixedSize(true)
-
         val homePageViewModel = ViewModelProviders.of(this,
             ViewModelFactory(this)
         ).get(NewsArticleViewModel::class.java)
@@ -51,13 +49,12 @@ class NewsDetailsActivity : AppCompatActivity() {
         homePageViewModel.makeServerRequest("For You")
 
         binding.newsArticlesList1.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.newsArticlesList1.setHasFixedSize(true)
         val homePageViewModel1 = ViewModelProviders.of(this,
             ViewModelFactory(this)
         ).get(NewsArticleViewModel::class.java)
         binding.newsArticlesList1.addOnScrollListener(homePageViewModel1.recyclerListener)
         binding.homepageViewModel1 = homePageViewModel1
-        binding.newsArticlesList.adapter = homePageViewModel1.newArticleListAdapter
+        binding.newsArticlesList1.adapter = homePageViewModel1.newArticleListAdapter
         homePageViewModel1.makeServerRequest("Business")
     }
 
