@@ -60,7 +60,7 @@ class DataRepository(var apiInterface: APIInterface) {
             })
     }
 
-    fun makeServerRequestByCatagory(uiCallBacks: UICallBacks, string: String) {
+    fun makeServerRequestByCategory(uiCallBacks: UICallBacks, string: String) {
         Log.v(DataRepository::class.simpleName, "makeServerRequest")
         apiInterface.getTopHeadLinesByCatogery(string, API_KEY, pageCount)
             .subscribeOn(Schedulers.io())

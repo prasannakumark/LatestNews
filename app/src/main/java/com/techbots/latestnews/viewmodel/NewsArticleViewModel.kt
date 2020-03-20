@@ -22,7 +22,7 @@ import javax.inject.Inject
 /**
  * This is class mediator between view and data source.
  */
-class HomePageViewModel(private val context: Context, private val newsDAO: NewsDAO) : BaseViewModel(),
+class NewsArticleViewModel(private val context: Context, private val newsDAO: NewsDAO) : BaseViewModel(),
     DataRepository.UICallBacks {
     val loadingVisibility:MutableLiveData<Int> = MutableLiveData()
     val errorMessage:MutableLiveData<Int> = MutableLiveData()
@@ -71,7 +71,7 @@ class HomePageViewModel(private val context: Context, private val newsDAO: NewsD
             if(category == "For You") {
                 dataRepository.makeServerRequest(this)
             } else {
-                dataRepository.makeServerRequestByCatagory(this,category)
+                dataRepository.makeServerRequestByCategory(this,category)
             }
         } else {
             callBacks.networkError()
@@ -117,7 +117,7 @@ class HomePageViewModel(private val context: Context, private val newsDAO: NewsD
             }
 
         }.subscribeOn(Schedulers.newThread()).observeOn(mainThread()).subscribe {
-                onNext -> Log.v(HomePageViewModel::class.simpleName, "Delete Items " + onNext.toString())
+                onNext -> Log.v(NewsArticleViewModel::class.simpleName, "Delete Items " + onNext.toString())
             Observable.create<Unit>{ subscribe->
                 try {
                     subscribe.onNext(newsDAO.insertAll(newsArticle))
@@ -127,7 +127,7 @@ class HomePageViewModel(private val context: Context, private val newsDAO: NewsD
                 }
 
             }.subscribeOn(Schedulers.newThread()).observeOn(mainThread()).subscribe {
-                    onNext -> Log.v(HomePageViewModel::class.simpleName, "Inseting an items " + onNext.toString())
+                    onNext -> Log.v(NewsArticleViewModel::class.simpleName, "Inseting an items " + onNext.toString())
                     newArticleListAdapter.updateArticleList(newsArticle)
             }
         }
@@ -142,7 +142,7 @@ class HomePageViewModel(private val context: Context, private val newsDAO: NewsD
     }
 
     companion object {
-        fun setCallBacks(homePageViewModel: HomePageViewModel, callBacks: CallBacks) {
+        fun setCallBacks(homePageViewModel: NewsArticleViewModel, callBacks: CallBacks) {
             homePageViewModel.callBacks = callBacks
         }
     }

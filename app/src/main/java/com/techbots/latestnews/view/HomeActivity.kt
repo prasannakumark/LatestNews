@@ -1,6 +1,7 @@
 package com.techbots.latestnews.view
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -15,6 +16,8 @@ class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
@@ -22,6 +25,7 @@ class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         tabs.setupWithViewPager(viewPager)
         val searchView:SearchView = findViewById(R.id.search_view)
         searchView.setOnQueryTextListener(this)
+        searchView.requestFocus(0)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {

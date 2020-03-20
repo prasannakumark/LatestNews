@@ -8,23 +8,33 @@
         <variable
             name="viewModel"
             type="com.techbots.latestnews.viewmodel.ArticleViewModel" />
+
+        <variable
+            name="homepageViewModel"
+            type="com.techbots.latestnews.viewmodel.NewsArticleViewModel" />
+        <variable
+            name="homepageViewModel1"
+            type="com.techbots.latestnews.viewmodel.NewsArticleViewModel" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="5dp">
+        android:layout_height="match_parent"
+        android:layout_margin="5dp">
 
-        <ScrollView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/detailed_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp">
+                android:orientation="vertical"
+                android:layout_margin="5dp"
+                android:padding="5dp">
+
                 <TextView
                     android:id="@+id/textView"
                     android:layout_width="match_parent"
@@ -37,7 +47,6 @@
                     android:id="@+id/frame_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textView"
                     android:padding="5dp">
 
                     <ImageView
@@ -55,85 +64,94 @@
                         app:dateText="@{viewModel.getDateView()}" />
                 </FrameLayout>
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@android:color/black"
+                    app:mutableText="@{viewModel.getDescription()}" />
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/top_news"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/detailed_view">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/black" />
+
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/frame_view"
-                    android:orientation="vertical"
-                    android:padding="5dp">
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:text="Top HeadLines"
+                    android:textColor="@android:color/holo_red_dark">
 
-                    <TextView
-                        android:id="@+id/description"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:textColor="@android:color/black"
-                        app:mutableText="@{viewModel.getDescription()}" />
+                </TextView>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="Source: "
-                        android:textColor="@android:color/holo_blue_dark" />
+                <ProgressBar
+                    android:id="@+id/ProgressBar"
+                    android:theme="@style/ProgressBarStyle"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminateTint="@android:color/black"
+                    android:progressTint="@android:color/black"
+                    app:mutableVisibility="@{homepageViewModel.getLoadingVisibility()}" />
 
-                    <TextView
-                        android:id="@+id/source"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:textColor="@android:color/black"
-                        app:mutableText="@{viewModel.getSource()}" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/news_articles_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="30dp"
+                    app:adapter="@{homepageViewModel.getNewArticleListAdapter()}" />
+            </FrameLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="URL: "
-                        android:textColor="@android:color/holo_blue_dark" />
+            <FrameLayout
+                android:id="@+id/feed_news"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/top_news">
 
-                    <TextView
-                        android:id="@+id/url"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:textColor="@android:color/black"
-                        android:linksClickable="true"
-                        android:autoLink="web"
-                        app:mutableText="@{viewModel.getUrl()}" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/black" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="Author: "
-                        android:textColor="@android:color/holo_blue_dark" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:text="Feed News"
+                    android:textColor="@android:color/holo_red_dark">
 
-                    <TextView
-                        android:id="@+id/author"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:textColor="@android:color/black"
-                        app:mutableText="@{viewModel.getAuthor()}" />
+                </TextView>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="Content: "
-                        android:textColor="@android:color/holo_blue_dark" />
+                <ProgressBar
+                    android:theme="@style/ProgressBarStyle"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminateTint="@android:color/black"
+                    android:progressTint="@android:color/black"
+                    app:mutableVisibility="@{homepageViewModel1.getLoadingVisibility()}" />
 
-                    <TextView
-                        android:id="@+id/content"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:textColor="@android:color/black"
-                        app:mutableText="@{viewModel.getContent()}" />
-                </LinearLayout>
-            </RelativeLayout>
-        </ScrollView>
-    </androidx.cardview.widget.CardView>
-
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/news_articles_list1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="30dp"
+                    app:adapter="@{homepageViewModel1.getNewArticleListAdapter()}" />
+            </FrameLayout>
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

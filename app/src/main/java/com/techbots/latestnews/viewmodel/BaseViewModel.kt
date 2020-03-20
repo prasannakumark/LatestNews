@@ -22,7 +22,7 @@ abstract class BaseViewModel:ViewModel(){
      */
     private fun inject() {
         when (this) {
-            is HomePageViewModel -> injector.inject(this)
+            is NewsArticleViewModel -> injector.inject(this)
             is ArticleViewModel -> injector.inject(this)
         }
     }

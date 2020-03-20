@@ -4,23 +4,25 @@
     <data>
         <variable
             name="viewModel"
-            type="com.techbots.latestnews.viewmodel.HomePageViewModel" />
+            type="com.techbots.latestnews.viewmodel.NewsArticleViewModel" />
     </data>
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <ProgressBar
-            android:layout_width="wrap_content"
+            android:id="@+id/ProgressBar"
+            android:theme="@style/ProgressBarStyle"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:mutableVisibility="@{viewModel.getLoadingVisibility()}"
-            />
+            android:indeterminateTint="@android:color/black"
+            android:progressTint="@android:color/black"
+            app:mutableVisibility="@{viewModel.getLoadingVisibility()}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/news_articles_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:adapter="@{viewModel.getNewArticleListAdapter()}" />
-    </FrameLayout>
+    </RelativeLayout>
 </layout>

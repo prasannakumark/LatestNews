@@ -34,7 +34,8 @@
                 android:resource="@xml/searchable" />
 
         </activity>
-        <activity android:name=".view.NewsDetailsActivity" />
+        <activity android:name=".view.NewsDetailsActivity"
+            android:launchMode="singleTop"/>
 
     </application>
 

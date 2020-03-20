@@ -3,7 +3,7 @@ package com.techbots.latestnews.di.components
 import com.techbots.latestnews.di.modules.DataRepositoryModule
 import com.techbots.latestnews.di.modules.NetworkModule
 import com.techbots.latestnews.viewmodel.ArticleViewModel
-import com.techbots.latestnews.viewmodel.HomePageViewModel
+import com.techbots.latestnews.viewmodel.NewsArticleViewModel
 import dagger.Component
 import javax.inject.Singleton
 
@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = arrayOf(DataRepositoryModule::class))
 interface HomePageComponent {
-    fun inject(homePageViewModel: HomePageViewModel)
+    fun inject(homePageViewModel: NewsArticleViewModel)
     fun inject(articleViewModel: ArticleViewModel)
     @Component.Builder
     interface Builder {

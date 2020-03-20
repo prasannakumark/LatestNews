@@ -13,11 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.techbots.latestnews.R
 import com.techbots.latestnews.databinding.NewsFragmentBinding
 import com.techbots.latestnews.di.ViewModelFactory
-import com.techbots.latestnews.viewmodel.HomePageViewModel
+import com.techbots.latestnews.viewmodel.NewsArticleViewModel
 
-class NewsFragment : Fragment(), HomePageViewModel.CallBacks{
+class NewsFragment : Fragment(), NewsArticleViewModel.CallBacks{
     private lateinit var binding: NewsFragmentBinding
-    private lateinit var viewModel: HomePageViewModel
+    private lateinit var viewModel: NewsArticleViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,11 +29,11 @@ class NewsFragment : Fragment(), HomePageViewModel.CallBacks{
 
         viewModel = ViewModelProviders.of(this,
             ViewModelFactory(activity!!)
-        ).get(HomePageViewModel::class.java)
+        ).get(NewsArticleViewModel::class.java)
         binding.newsArticlesList.addOnScrollListener(viewModel.recyclerListener)
         binding.viewModel = viewModel
         binding.newsArticlesList.adapter = viewModel.newArticleListAdapter
-        HomePageViewModel.setCallBacks(viewModel, this)
+        NewsArticleViewModel.setCallBacks(viewModel, this)
         viewModel.makeServerRequest(arguments!!.getString("key","For You"))
         return binding.root
     }

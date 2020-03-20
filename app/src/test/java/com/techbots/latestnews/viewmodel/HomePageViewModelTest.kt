@@ -20,7 +20,7 @@ import org.powermock.modules.junit4.PowerMockRunner
 @RunWith(PowerMockRunner::class)
 internal class HomePageViewModelTest {
     @InjectMocks
-    private lateinit var homePageViewModel: HomePageViewModel
+    private lateinit var homePageViewModel: NewsArticleViewModel
 
     @Mock
     private lateinit var uiCallBacks: DataRepository.UICallBacks
@@ -46,7 +46,7 @@ internal class HomePageViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        this.homePageViewModel = HomePageViewModel(context, newsDao)
+        this.homePageViewModel = NewsArticleViewModel(context, newsDao)
     }
 
     @Test
