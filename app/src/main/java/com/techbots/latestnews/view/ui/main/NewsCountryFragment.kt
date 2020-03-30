@@ -15,7 +15,7 @@ import com.techbots.latestnews.databinding.NewsFragmentBinding
 import com.techbots.latestnews.di.ViewModelFactory
 import com.techbots.latestnews.viewmodel.NewsArticleViewModel
 
-class NewsFragment : Fragment(), NewsArticleViewModel.CallBacks{
+class NewsCountryFragment : Fragment(), NewsArticleViewModel.CallBacks{
     private lateinit var binding: NewsFragmentBinding
     private lateinit var viewModel: NewsArticleViewModel
 
@@ -34,7 +34,7 @@ class NewsFragment : Fragment(), NewsArticleViewModel.CallBacks{
         binding.viewModel = viewModel
         binding.newsArticlesList.adapter = viewModel.newArticleListAdapter
         NewsArticleViewModel.setCallBacks(viewModel, this)
-        viewModel.makeServerRequest(arguments!!.getString("key","For You"))
+        viewModel.getNewsByCountry("in")
         return binding.root
     }
 
@@ -52,7 +52,7 @@ class NewsFragment : Fragment(), NewsArticleViewModel.CallBacks{
             .setCancelable(false)
             // positive button text and action
             .setPositiveButton("Ok", DialogInterface.OnClickListener {
-                    dialog, id -> viewModel.loadOfflineArticles()
+                    dialog, id ->
             })
 
         // create dialog box
@@ -75,8 +75,8 @@ class NewsFragment : Fragment(), NewsArticleViewModel.CallBacks{
          * number.
          */
         @JvmStatic
-        fun newInstance(sectionNumber: Int, string: String): NewsFragment {
-            return NewsFragment().apply {
+        fun newInstance(sectionNumber: Int, string: String): NewsCountryFragment {
+            return NewsCountryFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_SECTION_NUMBER, sectionNumber)
                     putString("key", string)

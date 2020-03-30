@@ -8,6 +8,7 @@ import com.techbots.latestnews.R
 
 private val TAB_TITLES = arrayOf(
     "For You",
+    "My City",
     "Business",
     "Entertainment",
     "General",
@@ -27,7 +28,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
     override fun getItem(position: Int): Fragment {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
-        return NewsFragment.newInstance(position, TAB_TITLES[position])
+        return FactoryNewsFragment.getNewsFragment(position, TAB_TITLES[position])
     }
 
     override fun getPageTitle(position: Int): CharSequence? {

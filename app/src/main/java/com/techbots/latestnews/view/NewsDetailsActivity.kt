@@ -46,7 +46,7 @@ class NewsDetailsActivity : AppCompatActivity() {
         binding.newsArticlesList.addOnScrollListener(homePageViewModel.recyclerListener)
         binding.homepageViewModel = homePageViewModel
         binding.newsArticlesList.adapter = homePageViewModel.newArticleListAdapter
-        homePageViewModel.makeServerRequest("For You")
+        homePageViewModel.getNewsByCountry("in")
 
         binding.newsArticlesList1.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val homePageViewModel1 = ViewModelProviders.of(this,
@@ -55,7 +55,7 @@ class NewsDetailsActivity : AppCompatActivity() {
         binding.newsArticlesList1.addOnScrollListener(homePageViewModel1.recyclerListener)
         binding.homepageViewModel1 = homePageViewModel1
         binding.newsArticlesList1.adapter = homePageViewModel1.newArticleListAdapter
-        homePageViewModel1.makeServerRequest("Business")
+        homePageViewModel1.getNewsByCategory("Business")
     }
 
     override fun onNewIntent(intent: Intent?) {

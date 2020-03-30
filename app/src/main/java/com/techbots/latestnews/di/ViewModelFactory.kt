@@ -11,12 +11,11 @@ import com.techbots.latestnews.viewmodel.NewsArticleViewModel
 /**
  * This is class for get exact view model based on the type of activity
  */
+@Suppress("UNCHECKED_CAST")
 class ViewModelFactory(private val activity: FragmentActivity): ViewModelProvider.Factory{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(NewsArticleViewModel::class.java)) {
-            val db = Room.databaseBuilder(activity.applicationContext, AppDatabase::class.java, "NewsArticle").build()
-            @Suppress("UNCHECKED_CAST")
-            return NewsArticleViewModel(activity, db.articleDao()) as T
+            return NewsArticleViewModel(activity) as T
         } else if (modelClass.isAssignableFrom(ArticleViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return ArticleViewModel(activity) as T
