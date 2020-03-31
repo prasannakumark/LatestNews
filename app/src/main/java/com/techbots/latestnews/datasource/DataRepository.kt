@@ -1,9 +1,10 @@
 package com.techbots.latestnews.db
 
+import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
 import com.techbots.latestnews.datasource.DataSource
 import com.techbots.latestnews.datasource.NewsArticle
 import com.techbots.latestnews.datasource.WebServices
-import javax.inject.Inject
 
 /**
  * This is class will all DataSource related work like communicating with
@@ -20,6 +21,7 @@ class DataRepository(var webServices: WebServices): DataSource {
         fun onRetrieveDataError()
     }
 
+
     override fun getNewsByCategory(uiCallBacks: UICallBacks, category: String) {
         webServices.getNewsByCategory(uiCallBacks,category)
     }
@@ -30,5 +32,9 @@ class DataRepository(var webServices: WebServices): DataSource {
 
     override fun getNewsByEveryThing(uiCallBacks: UICallBacks, query: String) {
         webServices.getNewsByEveryThing(uiCallBacks, query)
+    }
+
+    fun getPosts() : LiveData<PagedList<NewsArticle>> {
+       return webServices.getNewsArticles()
     }
 }

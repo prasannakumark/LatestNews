@@ -1,99 +1,56 @@
 package com.techbots.latestnews.datasource
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.techbots.latestnews.db.DataRepository
-import com.techbots.latestnews.db.NewsInfo
 import com.techbots.latestnews.network.APIInterface
-import com.techbots.latestnews.utils.API_KEY
-import io.reactivex.Observer
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
-import javax.inject.Inject
 
 class WebServices(var apiInterface: APIInterface): DataSource {
-    var pageCount:Int = 1
+    lateinit var newsArticlesLiveData  :LiveData<PagedList<NewsArticle>>
+    fun getNewsArticles():LiveData<PagedList<NewsArticle>> = newsArticlesLiveData
+
     override fun getNewsByCountry(uiCallBacks: DataRepository.UICallBacks, countryName: String) {
-        Log.v(DataRepository::class.simpleName, "makeServerRequest")
-        apiInterface.getTopHeadLines(countryName, API_KEY, pageCount)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { uiCallBacks.onRetrieveData()}
-            .doOnTerminate { uiCallBacks.onRetrieveDataFinish() }
-            .subscribe(object : Observer<NewsInfo> {
-                override fun onComplete() {
-                    Log.v(DataRepository::class.simpleName, "onComplete")
-                }
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(10)
+            .setPageSize(100).build();
+        val dataSourceFactory = object : androidx.paging.DataSource.Factory<Int, NewsArticle>() {
+            override fun create(): androidx.paging.DataSource<Int, NewsArticle> {
+                return NewsCountryDataSource(apiInterface,uiCallBacks, countryName)
+            }
+        }
 
-                override fun onNext(newsInfo: NewsInfo) {
-                    Log.v(DataRepository::class.simpleName, "onNext " + newsInfo.articles.size)
-                    uiCallBacks.onRetrieveDateSuccess(newsInfo.articles)
-                }
-
-                override fun onError(e: Throwable) {
-                    Log.v(DataRepository::class.simpleName, "onError " + e.message)
-                    uiCallBacks.onRetrieveDataError()
-                }
-
-                override fun onSubscribe(d: Disposable) {
-                    Log.v(DataRepository::class.simpleName, "onSubscribe " + d.toString())
-                }
-            })
+        newsArticlesLiveData = LivePagedListBuilder<Int, NewsArticle>(dataSourceFactory, config).build()
     }
 
     override fun getNewsByEveryThing(uiCallBacks: DataRepository.UICallBacks, query: String) {
-        Log.v(DataRepository::class.simpleName, "makeServerRequest")
-        apiInterface.getEverything(query, API_KEY, pageCount)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { uiCallBacks.onRetrieveData()}
-            .doOnTerminate { uiCallBacks.onRetrieveDataFinish() }
-            .subscribe(object : Observer<NewsInfo> {
-                override fun onComplete() {
-                    Log.v(DataRepository::class.simpleName, "onComplete")
-                }
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(10)
+            .setPageSize(100).build();
+        val dataSourceFactory = object : androidx.paging.DataSource.Factory<Int, NewsArticle>() {
+            override fun create(): androidx.paging.DataSource<Int, NewsArticle> {
+                return NewsEverythingDataSource(apiInterface,uiCallBacks,query)
+            }
+        }
 
-                override fun onNext(newsInfo: NewsInfo) {
-                    Log.v(DataRepository::class.simpleName, "onNext " + newsInfo.articles.size)
-                    uiCallBacks.onRetrieveDateSuccess(newsInfo.articles)
-                }
-
-                override fun onError(e: Throwable) {
-                    Log.v(DataRepository::class.simpleName, "onError " + e.message)
-                    uiCallBacks.onRetrieveDataError()
-                }
-
-                override fun onSubscribe(d: Disposable) {
-                    Log.v(DataRepository::class.simpleName, "onSubscribe " + d.toString())
-                }
-            })
+        newsArticlesLiveData = LivePagedListBuilder<Int, NewsArticle>(dataSourceFactory, config).build()
     }
 
     override fun getNewsByCategory(uiCallBacks: DataRepository.UICallBacks, category: String) {
         Log.v(DataRepository::class.simpleName, "makeServerRequest")
-        apiInterface.getTopHeadLinesByCatogery(category, API_KEY, pageCount)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { uiCallBacks.onRetrieveData()}
-            .doOnTerminate { uiCallBacks.onRetrieveDataFinish() }
-            .subscribe(object : Observer<NewsInfo> {
-                override fun onComplete() {
-                    Log.v(DataRepository::class.simpleName, "onComplete")
-                }
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(10)
+            .setPageSize(100).build();
+        val dataSourceFactory = object : androidx.paging.DataSource.Factory<Int, NewsArticle>() {
+            override fun create(): androidx.paging.DataSource<Int, NewsArticle> {
+                return NewsCategoryDataSource(apiInterface,uiCallBacks,category)
+            }
+        }
 
-                override fun onNext(newsInfo: NewsInfo) {
-                    Log.v(DataRepository::class.simpleName, "onNext " + newsInfo.articles.size)
-                    uiCallBacks.onRetrieveDateSuccess(newsInfo.articles)
-                }
-
-                override fun onError(e: Throwable) {
-                    Log.v(DataRepository::class.simpleName, "onError " + e.message)
-                    uiCallBacks.onRetrieveDataError()
-                }
-
-                override fun onSubscribe(d: Disposable) {
-                    Log.v(DataRepository::class.simpleName, "onSubscribe " + d.toString())
-                }
-            })
+        newsArticlesLiveData = LivePagedListBuilder<Int, NewsArticle>(dataSourceFactory, config).build()
     }
 }

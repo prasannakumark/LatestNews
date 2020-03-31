@@ -1,13 +1,17 @@
 package com.techbots.latestnews.view.ui.main
 
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.techbots.latestnews.R
@@ -25,16 +29,19 @@ class NewsCatergeryFragment : Fragment(), NewsArticleViewModel.CallBacks{
     ): View? {
         binding = DataBindingUtil.inflate(inflater,
             R.layout.news_fragment,container, false)
-        binding.newsArticlesList.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        binding.newsArticlesList.layoutManager = LinearLayoutManagerWrapper(activity, LinearLayoutManager.VERTICAL, false)
 
         viewModel = ViewModelProviders.of(this,
             ViewModelFactory(activity!!)
         ).get(NewsArticleViewModel::class.java)
-        binding.newsArticlesList.addOnScrollListener(viewModel.recyclerListener)
         binding.viewModel = viewModel
         binding.newsArticlesList.adapter = viewModel.newArticleListAdapter
         NewsArticleViewModel.setCallBacks(viewModel, this)
         viewModel.getNewsByCategory(arguments!!.getString("key","For You"))
+        viewModel.getPosts().observe(this, Observer {
+            Log.v(NewsCatergeryFragment::class.simpleName, "NewsCatergery Fragment " + it.size)
+            viewModel.newArticleListAdapter.submitList(it)
+        })
         return binding.root
     }
 
@@ -82,6 +89,28 @@ class NewsCatergeryFragment : Fragment(), NewsArticleViewModel.CallBacks{
                     putString("key", string)
                 }
             }
+        }
+    }
+
+    class LinearLayoutManagerWrapper : LinearLayoutManager {
+        constructor(context: Context?) : super(context) {}
+        constructor(context: Context?, orientation: Int, reverseLayout: Boolean) : super(
+            context,
+            orientation,
+            reverseLayout
+        ) {
+        }
+
+        constructor(
+            context: Context?,
+            attrs: AttributeSet?,
+            defStyleAttr: Int,
+            defStyleRes: Int
+        ) : super(context, attrs, defStyleAttr, defStyleRes) {
+        }
+
+        override fun supportsPredictiveItemAnimations(): Boolean {
+            return false
         }
     }
 }

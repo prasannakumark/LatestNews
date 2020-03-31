@@ -15,7 +15,7 @@ import com.techbots.latestnews.viewmodel.NewsArticleViewModel
 class ViewModelFactory(private val activity: FragmentActivity): ViewModelProvider.Factory{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(NewsArticleViewModel::class.java)) {
-            return NewsArticleViewModel(activity) as T
+            return NewsArticleViewModel() as T
         } else if (modelClass.isAssignableFrom(ArticleViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return ArticleViewModel(activity) as T

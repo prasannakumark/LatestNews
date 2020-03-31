@@ -1,5 +1,6 @@
 package com.techbots.latestnews.datasource
 
+import android.content.Context
 import com.techbots.latestnews.db.DataRepository
 
 interface DataSource {

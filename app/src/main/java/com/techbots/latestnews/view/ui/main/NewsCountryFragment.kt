@@ -2,12 +2,14 @@ package com.techbots.latestnews.view.ui.main
 
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.techbots.latestnews.R
@@ -30,11 +32,14 @@ class NewsCountryFragment : Fragment(), NewsArticleViewModel.CallBacks{
         viewModel = ViewModelProviders.of(this,
             ViewModelFactory(activity!!)
         ).get(NewsArticleViewModel::class.java)
-        binding.newsArticlesList.addOnScrollListener(viewModel.recyclerListener)
         binding.viewModel = viewModel
         binding.newsArticlesList.adapter = viewModel.newArticleListAdapter
         NewsArticleViewModel.setCallBacks(viewModel, this)
         viewModel.getNewsByCountry("in")
+        viewModel.getPosts().observe(this, Observer {
+            Log.v(NewsCatergeryFragment::class.simpleName, "NewsCatergery Fragment " + it.size)
+            viewModel.newArticleListAdapter.submitList(it)
+        })
         return binding.root
     }
 
