@@ -15,14 +15,15 @@ import com.techbots.latestnews.datasource.NewsArticle
 import com.techbots.latestnews.di.ViewModelFactory
 import com.techbots.latestnews.utils.EXTRA_OBJECT
 import com.techbots.latestnews.view.ui.main.NewsCatergeryFragment
+import com.techbots.latestnews.view.ui.main.NewsCountryFragment
 import com.techbots.latestnews.viewmodel.ArticleViewModel
 import com.techbots.latestnews.viewmodel.NewsArticleViewModel
 
 class NewsDetailsActivity : AppCompatActivity() {
-
     private lateinit var article: NewsArticle
     private lateinit var binding: ActivityNewsDetailsBinding
     private lateinit var articleViewModel: ArticleViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
@@ -31,6 +32,7 @@ class NewsDetailsActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,
             R.layout.activity_news_details
         )
+        
         initView()
     }
 

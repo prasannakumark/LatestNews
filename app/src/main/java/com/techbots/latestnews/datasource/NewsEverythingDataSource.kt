@@ -3,74 +3,65 @@ package com.techbots.latestnews.datasource
 import android.util.Log
 import androidx.paging.PageKeyedDataSource
 import com.techbots.latestnews.db.DataRepository
-import com.techbots.latestnews.db.NewsInfo
 import com.techbots.latestnews.network.APIInterface
 import com.techbots.latestnews.utils.API_KEY
-import io.reactivex.Observer
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class NewsEverythingDataSource(var apiInterface: APIInterface,
-                               var uiCallBacks: DataRepository.UICallBacks,
-                               var query:String) : PageKeyedDataSource<Int, NewsArticle>() {
+class NewsEverythingDataSource(
+    var apiInterface: APIInterface,
+    coroutineContext: CoroutineContext,
+    var query:String) : PageKeyedDataSource<Int, NewsArticle>() {
+
+    private val job = Job()
+    private val scope = CoroutineScope(coroutineContext + job)
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, NewsArticle>
     ) {
-        loadInitData(1,callback)
+        loadInitData(1, callback)
     }
-
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, NewsArticle>) {
-        loadAfterData(params.key+1,callback)
+        loadAfterData(params.key + 1, callback)
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, NewsArticle>) {}
 
     fun loadInitData(pageCount:Int, callback: LoadInitialCallback<Int, NewsArticle>) {
         Log.v(DataRepository::class.simpleName, "makeServerRequest")
-        apiInterface.getEverything(query, API_KEY, pageCount)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<NewsInfo> {
-                override fun onComplete() {
-                    Log.v(DataRepository::class.simpleName, "onComplete")
+        scope.launch {
+            try {
+                val response = apiInterface.getEverything(query, API_KEY, pageCount)
+                when{
+                    response.isSuccessful -> {
+                        val listing = response.body()?.articles
+                        callback.onResult(listing ?: listOf(), 1, 2)
+                    }
                 }
-
-                override fun onNext(newsInfo: NewsInfo) {
-                    Log.v(DataRepository::class.simpleName, "onNext " + newsInfo.articles.size)
-                    callback.onResult(newsInfo.articles ?: listOf(), 1, 2)
-                    uiCallBacks.onRetrieveDateSuccess(newsInfo.articles)
-                }
-
-                override fun onError(e: Throwable) {
-                    Log.v(DataRepository::class.simpleName, "onError " + e.message)
-                }
-
-                override fun onSubscribe(d: Disposable) {
-                    Log.v(DataRepository::class.simpleName, "onSubscribe " + d.toString())
-                }
-            })
+            }catch (exception : Exception){
+                Log.e("PostsDataSource", "Failed to fetch data!")
+            }
+        }
     }
 
     fun loadAfterData(pageCount:Int, callback: LoadCallback<Int, NewsArticle>) {
         Log.v(DataRepository::class.simpleName, "makeServerRequest")
-        apiInterface.getEverything(query, API_KEY, pageCount)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<NewsInfo> {
-                override fun onComplete() {}
-
-                override fun onNext(newsInfo: NewsInfo) {
-                    Log.v(DataRepository::class.simpleName, "onNext " + newsInfo.articles.size)
-                    uiCallBacks.onRetrieveDateSuccess(newsInfo.articles)
-                    callback.onResult(newsInfo.articles,pageCount+1)
+        scope.launch {
+            try {
+                val response = apiInterface.getEverything(query, API_KEY, pageCount)
+                when{
+                    response.isSuccessful -> {
+                        val listing = response.body()?.articles
+                        callback.onResult(listing ?: listOf(), pageCount+1)
+                    }
                 }
 
-                override fun onError(e: Throwable) {}
-
-                override fun onSubscribe(d: Disposable) {}
-            })
+            }catch (exception : Exception){
+                Log.e("PostsDataSource", "Failed to fetch data!")
+            }
+        }
     }
 }

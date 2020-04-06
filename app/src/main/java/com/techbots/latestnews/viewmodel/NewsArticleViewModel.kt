@@ -15,10 +15,9 @@ import org.jetbrains.annotations.NotNull
 import javax.inject.Inject
 
 /**
- * This is class mediator between view and data source.
+ * This class is responsible for preparing and managing the data for view(ie: activity or fragment)
  */
-class NewsArticleViewModel : BaseViewModel(),
-    DataRepository.UICallBacks {
+class NewsArticleViewModel : BaseViewModel() {
     val loadingVisibility:MutableLiveData<Int> = MutableLiveData()
     val errorMessage:MutableLiveData<Int> = MutableLiveData()
     @Inject
@@ -32,23 +31,6 @@ class NewsArticleViewModel : BaseViewModel(),
         fun networkError()
     }
 
-    override fun onRetrieveData() {
-        loadingVisibility.value = View.VISIBLE
-        errorMessage.value = null
-    }
-
-    override fun onRetrieveDataFinish() {
-        loadingVisibility.value = View.GONE
-    }
-
-    override fun onRetrieveDateSuccess(newsArticle: List<NewsArticle>) {
-        newArticleListAdapter.updateArticleList(newsArticle)
-    }
-
-    override fun onRetrieveDataError() {
-        errorMessage.value = R.string.post_error
-    }
-
     companion object {
         fun setCallBacks(homePageViewModel: NewsArticleViewModel, callBacks: CallBacks) {
             homePageViewModel.callBacks = callBacks
@@ -56,15 +38,15 @@ class NewsArticleViewModel : BaseViewModel(),
     }
 
     fun getNewsByCategory(category: String) {
-        dataRepository.getNewsByCategory(this,category)
+        dataRepository.getNewsByCategory(category)
     }
 
     fun getNewsByEveryThing(query: String) {
-        dataRepository.getNewsByEveryThing(this,query)
+        dataRepository.getNewsByEveryThing(query)
     }
 
     fun getNewsByCountry(countryName: String) {
-        dataRepository.getNewsByCountry(this,countryName)
+        dataRepository.getNewsByCountry(countryName)
     }
 
     fun getPosts() : LiveData<PagedList<NewsArticle>> {

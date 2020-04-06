@@ -14,7 +14,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.techbots.latestnews.R
 import com.techbots.latestnews.utils.extension.getParentActivity
 
 @BindingAdapter("adapter")
